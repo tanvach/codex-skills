@@ -1,0 +1,4 @@
+interface:
+  display_name: "Double Check Work"
+  short_description: "Run a quick final verification pass"
+  default_prompt: "Use $double-check-work to verify the work you just completed before responding."
