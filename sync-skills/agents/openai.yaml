@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sync Skills"
+  short_description: "Generate and install Codex and Claude skills"
+  default_prompt: "Use $sync-skills to regenerate Claude commands and sync both Codex and Claude skill installs."
