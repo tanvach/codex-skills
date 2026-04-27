@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Todo"
+  short_description: "Create a ranked repository TODO.md"
+  default_prompt: "Use $create-todo to create a carefully ranked root TODO.md for this repository."

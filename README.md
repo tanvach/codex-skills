@@ -87,6 +87,12 @@ If you deleted a source skill and want the old links cleaned up too:
 
 When a new skill is added, rerunning sync will generate a new Claude command file and link it into both tools. When a skill is removed, run the prune variants of the install scripts to remove stale repo-managed links.
 
+## Included Workflow Skills
+
+- `create-todo` creates a carefully ranked root `TODO.md` when a repo has no strong todo list yet.
+- `update-todo` prunes, reranks, and integrates new requests into an existing root `TODO.md`.
+- `sync-skills` regenerates Claude commands and installs managed links for both tools.
+
 ## Generated Files
 
 - `generated/claude-commands/*.md` are derived artifacts.

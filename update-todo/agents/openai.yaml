@@ -1,0 +1,4 @@
+interface:
+  display_name: "Update Todo"
+  short_description: "Prune and rerank repository todos"
+  default_prompt: "Use $update-todo to prune, rerank, or integrate new work into this repository's TODO.md."
