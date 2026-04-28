@@ -91,7 +91,43 @@ When a new skill is added, rerunning sync will generate a new Claude command fil
 
 - `create-todo` creates a carefully ranked root `TODO.md` when a repo has no strong todo list yet.
 - `update-todo` prunes, reranks, and integrates new requests into an existing root `TODO.md`.
+- `execplan-create` creates an ExecPlan from a brief, PRD, RFC, or locked refactor decision.
+- `execplan-improve` audits an existing ExecPlan against real code and rewrites only code-grounded improvements.
+- `implement-execplan` executes a work-item ExecPlan or legacy singleton plan.
+- `find-refactor-candidates` creates a materially different refactor shortlist under `.agent/work/`.
+- `select-refactor` challenges a shortlist and locks the final refactor decision before planning.
+- `refactor-something` is the one-shot shortcut for a single consolidation refactor recommendation.
 - `sync-skills` regenerates Claude commands and installs managed links for both tools.
+
+## ExecPlan Workflows
+
+For small or direct implementation requests, use the legacy-compatible singleton flow:
+
+```bash
+$execplan-create
+$implement-execplan
+```
+
+That flow writes `.agent/execplan-pending.md` and, after implementation, archives the completed plan under `.agent/done/`.
+
+For larger refactors or architectural simplification work, use the staged workflow:
+
+```bash
+$find-refactor-candidates
+$select-refactor
+$execplan-create
+$execplan-improve
+$implement-execplan
+```
+
+That flow keeps initiative artifacts under `.agent/work/<id-slug>/`:
+
+- `meta.json` tracks lifecycle state.
+- `candidates.md` records the shortlist and assumption ledger.
+- `decision.md` locks the chosen refactor.
+- `execplan.md` is the executable plan.
+
+`refactor-something` remains available as a one-shot shortcut when the user wants a decisive single recommendation without the staged candidate and decision artifacts.
 
 ## Generated Files
 
