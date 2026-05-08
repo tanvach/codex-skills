@@ -94,6 +94,7 @@ When a new skill is added, rerunning sync will generate a new Claude command fil
 - `execplan-create` creates an ExecPlan from a brief, PRD, RFC, or locked refactor decision.
 - `execplan-improve` audits an existing ExecPlan against real code and rewrites only code-grounded improvements.
 - `implement-execplan` executes a work-item ExecPlan or legacy singleton plan.
+- `walk-through-changes` explains completed implementation work so a human can validate the structure.
 - `find-refactor-candidates` creates a materially different refactor shortlist under `.agent/work/`.
 - `select-refactor` challenges a shortlist and locks the final refactor decision before planning.
 - `refactor-something` is the one-shot shortcut for a single consolidation refactor recommendation.

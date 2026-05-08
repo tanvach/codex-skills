@@ -1,0 +1,4 @@
+interface:
+  display_name: "Walk Through Changes"
+  short_description: "Explain completed changes for validation"
+  default_prompt: "Use $walk-through-changes to explain the completed implementation so I can validate the overall structure."
