@@ -6,48 +6,13 @@ usage() {
   printf 'Usage: %s [--check]\n' "$(basename "$0")" >&2
 }
 
-strip_frontmatter() {
-  local input_file="$1"
-  awk '
-    NR == 1 && $0 == "---" { in_frontmatter = 1; next }
-    in_frontmatter && $0 == "---" { in_frontmatter = 0; next }
-    !in_frontmatter { print }
-  ' "$input_file"
-}
-
-extract_description() {
-  local input_file="$1"
-  awk '
-    BEGIN { in_frontmatter = 0; collecting = 0; first = 1; value = "" }
-    NR == 1 && $0 == "---" { in_frontmatter = 1; next }
-    in_frontmatter && $0 == "---" { print value; exit }
-    !in_frontmatter { exit }
-    /^description:[[:space:]]*>-/ {
-      collecting = 1
-      next
-    }
-    collecting && /^[^[:space:]]/ {
-      print value
-      exit
-    }
-    collecting {
-      line = $0
-      sub(/^[[:space:]]+/, "", line)
-      if (first) {
-        value = line
-        first = 0
-      } else {
-        value = value " " line
-      }
-    }
-  ' "$input_file"
-}
-
 escape_yaml() {
   printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'
 }
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+. "$repo_root/scripts/lib/skill_meta.sh"
 output_dir="$repo_root/generated/claude-commands"
 tmp_dir="$(mktemp -d "${TMPDIR:-/tmp}/claude-skills.XXXXXX")"
 check=false

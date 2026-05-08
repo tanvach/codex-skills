@@ -1,5 +1,5 @@
 ---
-description: ""
+description: "Create a complete ARCHITECTURE.md before any implementation. Use when a user asks for system architecture, architectural design, or an ARCHITECTURE.md for a new or existing project, especially before coding or refactoring."
 ---
 
 <!-- Generated from architecture-docs-creator. Do not edit directly. -->
