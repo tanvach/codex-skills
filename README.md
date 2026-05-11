@@ -148,6 +148,7 @@ When a new skill is added, rerunning sync will generate new derived files and li
 - `update-todo` prunes, reranks, and integrates new requests into an existing root `TODO.md`.
 - `execplan-create` creates an ExecPlan from a brief, PRD, RFC, or locked refactor decision.
 - `execplan-improve` audits an existing ExecPlan against real code and rewrites only code-grounded improvements.
+- `execplan-portability-check` scores an ExecPlan for portability to a fresh implementer with no conversation history. Use before handing a plan off to a different model or session.
 - `implement-execplan` executes a work-item ExecPlan or legacy singleton plan.
 - `walk-through-changes` explains completed implementation work so a human can validate the structure.
 - `find-refactor-candidates` creates a materially different refactor shortlist under `.agent/work/`.
@@ -173,8 +174,11 @@ $find-refactor-candidates
 $select-refactor
 $execplan-create
 $execplan-improve
+$execplan-portability-check
 $implement-execplan
 ```
+
+`$execplan-portability-check` is optional but recommended if you plan to hand the plan off to a different model or run `$implement-execplan` in a fresh session. It audits the plan in isolation and reports where conversation context has leaked into prose.
 
 That flow keeps initiative artifacts under `.agent/work/<id-slug>/`:
 
