@@ -144,8 +144,12 @@ When a new skill is added, rerunning sync will generate new derived files and li
 
 ## Included Workflow Skills
 
+Listed in roughly the order they appear in the staged workflow:
+
+- `architecture-docs-creator` produces an opinionated `ARCHITECTURE.md` and stops for approval. Use at the start of a new repo or when none exists.
+- `update-architecture-docs` refreshes `ARCHITECTURE.md` after implementation lands or when it has drifted. Reads completed plans from `.agent/done/` to find architectural shifts.
 - `create-todo` creates a carefully ranked root `TODO.md` when a repo has no strong todo list yet.
-- `update-todo` prunes, reranks, and integrates new requests into an existing root `TODO.md`.
+- `update-todo` prunes, reranks, and integrates new requests into an existing root `TODO.md`. Reads completed plans from `.agent/done/` to integrate follow-ups.
 - `execplan-create` creates an ExecPlan from a brief, PRD, RFC, or locked refactor decision.
 - `execplan-improve` audits an existing ExecPlan against real code and rewrites only code-grounded improvements.
 - `execplan-portability-check` scores an ExecPlan for portability to a fresh implementer with no conversation history. Use before handing a plan off to a different model or session.
@@ -157,32 +161,86 @@ When a new skill is added, rerunning sync will generate new derived files and li
 - `refactor-something` is the one-shot shortcut for a single consolidation refactor recommendation.
 - `sync-skills` regenerates derived files and installs managed links for all four tools.
 
-## ExecPlan Workflows
+## Workflows
 
-For small or direct implementation requests, use the legacy-compatible singleton flow:
+Three entry points. One shared per-task loop. Same-session work skips two rigor passes.
 
-```bash
-$execplan-create
-$implement-execplan
-```
+### Starting a new repo
 
-That flow writes `.agent/execplan-pending.md` and, after implementation, archives the completed plan under `.agent/done/`.
-
-For larger refactors or architectural simplification work, use the staged workflow:
+Before any per-task work, lay down the shared artifacts:
 
 ```bash
-$find-refactor-candidates
-$select-refactor
-$execplan-create
-$execplan-improve
-$execplan-portability-check
-$implement-execplan
-$verify-implementation
+$architecture-docs-creator   # produces ARCHITECTURE.md (stops for approval)
+$create-todo                 # produces a prioritized TODO.md
 ```
 
-`$execplan-portability-check` is optional but recommended if you plan to hand the plan off to a different model or run `$implement-execplan` in a fresh session. It audits the plan in isolation and reports where conversation context has leaked into prose.
+Then pick the top item from TODO.md and enter the per-task loop with it as input.
 
-`$verify-implementation` is the close-the-loop pass after `$implement-execplan`. It reads the plan, the actual `git diff`, and the validation criteria, and reports whether the implementation matches the plan or silently deviated. Especially valuable when the implementer was a different (or weaker) model than the planner — `$implement-execplan` enforces per-step commits and living-section updates specifically so this verification has the inputs it needs.
+### Continuing work on an existing repo
+
+If ARCHITECTURE.md or TODO.md has drifted, refresh them first:
+
+```bash
+$update-architecture-docs    # refresh ARCHITECTURE.md if implementation has moved past it
+$update-todo                 # rerank, prune, integrate any new requests
+```
+
+If the next piece of work isn't already named, pick it:
+
+```bash
+$find-refactor-candidates    # shortlist 3-5 refactor opportunities under .agent/work/
+$select-refactor             # pressure-test the shortlist and lock the choice
+# or use $refactor-something as a one-shot shortcut for small/urgent refactors
+```
+
+Otherwise, take the item directly from TODO.md or a PRD/RFC.
+
+### Per-task loop (full rigor, cross-model handoff)
+
+This is the loop with every rigor pass run. Use it when planning and implementing may happen in different sessions or on different models (e.g. plan on Claude/GPT-5, implement on Gemini Flash):
+
+```bash
+$execplan-create             # plan from a PRD, RFC, TODO item, or locked refactor decision
+$execplan-improve            # rewrite the plan against real code, fix code-grounding gaps
+$execplan-portability-check  # audit the plan in isolation; flag context that leaks from this session
+$implement-execplan          # implement; per-step commits; fill living sections before archive
+$walk-through-changes        # human-readable explanation for the reviewer
+$verify-implementation       # triangulate plan vs git diff vs validation runs
+$update-architecture-docs    # absorb any architectural shifts into ARCHITECTURE.md
+$update-todo                 # mark done, integrate follow-ups from Outcomes & Retrospective
+```
+
+If `$verify-implementation`'s verdict is `silently deviates` or `fails validation`, loop back through `$execplan-improve` → `$implement-execplan` → `$verify-implementation` until the verdict is clean. **Do not run `$update-todo` until the verdict is good** — checking off TODO items for half-done work hides the gap.
+
+### Per-task loop (same-session shortcut)
+
+When planning and implementing happen in the same session and same model, two rigor passes are redundant because conversation context is already in the model:
+
+```bash
+$execplan-create             # plan
+$execplan-improve            # still useful — catches code-grounding drift, not just context leakage
+# skip $execplan-portability-check — its job is to detect handoff leakage
+$implement-execplan          # the embedded $double-check-work pass covers same-session sanity
+# skip $verify-implementation — same-session validation already happened via double-check-work
+$walk-through-changes        # optional, mostly for the human reviewer
+$update-architecture-docs    # still required — docs don't care about session boundaries
+$update-todo                 # still required — backlog hygiene doesn't care about session boundaries
+```
+
+The two skips are `$execplan-portability-check` and `$verify-implementation`. Both exist specifically to catch what cross-session/cross-model handoff loses; in same-session use, conversation memory plus `$double-check-work` cover the same ground at lower cost. The rest of the loop still applies.
+
+### ExecPlan artifact paths
+
+**Singleton flow** (small/direct implementations):
+- `.agent/execplan-pending.md` while planning and implementing.
+- `.agent/done/<timestamp>-<slug>.md` after archive.
+
+**Staged flow** (larger refactors, multi-step initiatives):
+- `.agent/work/<id-slug>/`
+  - `meta.json` — lifecycle state.
+  - `candidates.md` — refactor shortlist.
+  - `decision.md` — locked refactor choice.
+  - `execplan.md` — executable plan.
 
 That flow keeps initiative artifacts under `.agent/work/<id-slug>/`:
 
