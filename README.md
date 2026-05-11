@@ -149,7 +149,8 @@ When a new skill is added, rerunning sync will generate new derived files and li
 - `execplan-create` creates an ExecPlan from a brief, PRD, RFC, or locked refactor decision.
 - `execplan-improve` audits an existing ExecPlan against real code and rewrites only code-grounded improvements.
 - `execplan-portability-check` scores an ExecPlan for portability to a fresh implementer with no conversation history. Use before handing a plan off to a different model or session.
-- `implement-execplan` executes a work-item ExecPlan or legacy singleton plan.
+- `implement-execplan` executes a work-item ExecPlan or legacy singleton plan, with per-step commits and mandatory living-section updates before archive.
+- `verify-implementation` triangulates the plan against the actual `git diff` and validation runs. Use after `implement-execplan`, ideally in a fresh session or on a stronger model, to catch silent deviations and validation failures.
 - `walk-through-changes` explains completed implementation work so a human can validate the structure.
 - `find-refactor-candidates` creates a materially different refactor shortlist under `.agent/work/`.
 - `select-refactor` challenges a shortlist and locks the final refactor decision before planning.
@@ -176,9 +177,12 @@ $execplan-create
 $execplan-improve
 $execplan-portability-check
 $implement-execplan
+$verify-implementation
 ```
 
 `$execplan-portability-check` is optional but recommended if you plan to hand the plan off to a different model or run `$implement-execplan` in a fresh session. It audits the plan in isolation and reports where conversation context has leaked into prose.
+
+`$verify-implementation` is the close-the-loop pass after `$implement-execplan`. It reads the plan, the actual `git diff`, and the validation criteria, and reports whether the implementation matches the plan or silently deviated. Especially valuable when the implementer was a different (or weaker) model than the planner — `$implement-execplan` enforces per-step commits and living-section updates specifically so this verification has the inputs it needs.
 
 That flow keeps initiative artifacts under `.agent/work/<id-slug>/`:
 

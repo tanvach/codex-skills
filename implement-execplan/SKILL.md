@@ -67,17 +67,36 @@ When the plan leaves room for judgment:
 4. For work items, update `meta.json` to `stage="implementation"` and
    `state="active"` before coding.
 5. Inspect relevant code paths before editing.
-6. Implement milestone by milestone.
-7. Keep the ExecPlan's `Progress`, `Surprises & Discoveries`, `Decision Log`,
-   and `Outcomes & Retrospective` sections up to date when those sections
-   exist.
-8. After each meaningful slice, run the plan's validation steps or the nearest
-   targeted verification.
+6. Implement step by step. After each completed step:
+   - Commit with `git commit -m "Implements step N: <one-line description>"`
+     where N is the step number from the plan's Implementation Plan section.
+     Per-step commits let a later `$verify-implementation` pass map every
+     diff hunk back to a plan step.
+   - Resolve that step's checkbox in `Progress`.
+   - If you hit anything the plan did not predict, append a one-paragraph
+     entry to `Surprises & Discoveries` citing the file and line.
+   - If you resolved an ambiguity the plan left open, append a
+     `Decision Log` entry with the rationale.
+7. After each meaningful slice, run the plan's validation steps or the
+   nearest targeted verification.
+8. Before archiving the plan to `.agent/done/` (or marking the work item
+   `state="completed"`), the plan must reflect what actually happened:
+   - Every step in `Progress` is either checked or marked deferred with a
+     one-line reason.
+   - `Outcomes & Retrospective` contains a paragraph summarizing what
+     shipped, any open follow-ups, and any lesson worth carrying forward.
+   - If `Surprises & Discoveries`, `Decision Log`, or
+     `Outcomes & Retrospective` is missing from the plan's structure but
+     applies to what happened, add the section before archiving.
+   These sections are how a downstream verification pass — especially one
+   run by a different model in a fresh session — understands what you did.
+   Skipping them defeats the verification loop.
 9. If you finish a work-item implementation, set `state="completed"`.
-10. If you cannot finish safely in the current turn, record the blocker in the
-    plan, set work-item state to `blocked` when applicable, and stop cleanly.
-11. Before your final response, run a brief `$double-check-work` pass over the
-    implementation, diff, and verification.
+10. If you cannot finish safely in the current turn, record the blocker in
+    the plan, set work-item state to `blocked` when applicable, and stop
+    cleanly.
+11. Before your final response, run a brief `$double-check-work` pass over
+    the implementation, diff, and verification.
 
 ## Implementation-First Rule
 
