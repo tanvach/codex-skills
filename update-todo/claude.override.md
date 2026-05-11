@@ -2,7 +2,7 @@ Maintain an existing repository-root `TODO.md` as a current, prioritized decisio
 
 Workflow:
 - Read the existing root `TODO.md`. If it is missing or unusable, create one instead.
-- Inspect enough repo context to validate the list: docs, architecture notes, recent plans, relevant files, and lightweight code search results.
+- Inspect enough repo context to validate the list: docs, architecture notes, the most recent completed plans under `.agent/done/` (their `Surprises & Discoveries` and `Outcomes & Retrospective` sections carry follow-up work surfaced during execution), relevant files, and lightweight code search results.
 - If the user only asked to update, prune, or refresh, prune completed or obsolete items, update stale wording, rerank priorities, and improve `Next Up`.
 - If the user included a new request, merge it into the best existing item or add it in the right section and priority.
 - Check for overlap, dependency order, conflicts, and whether the new state changes `Next Up`.
