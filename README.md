@@ -144,8 +144,12 @@ When a new skill is added, rerunning sync will generate new derived files and li
 
 ## Included Workflow Skills
 
+Listed in roughly the order they appear in the staged workflow:
+
+- `architecture-docs-creator` produces an opinionated `ARCHITECTURE.md` and stops for approval. Use at the start of a new repo or when none exists.
+- `update-architecture-docs` refreshes `ARCHITECTURE.md` after implementation lands or when it has drifted. Reads completed plans from `.agent/done/` to find architectural shifts.
 - `create-todo` creates a carefully ranked root `TODO.md` when a repo has no strong todo list yet.
-- `update-todo` prunes, reranks, and integrates new requests into an existing root `TODO.md`.
+- `update-todo` prunes, reranks, and integrates new requests into an existing root `TODO.md`. Reads completed plans from `.agent/done/` to integrate follow-ups.
 - `execplan-create` creates an ExecPlan from a brief, PRD, RFC, or locked refactor decision.
 - `execplan-improve` audits an existing ExecPlan against real code and rewrites only code-grounded improvements.
 - `execplan-portability-check` scores an ExecPlan for portability to a fresh implementer with no conversation history. Use before handing a plan off to a different model or session.
