@@ -11,7 +11,12 @@ Synchronize ARCHITECTURE.md with changes made during execplan implementation.
 
 ## Workflow
 
-1. Read the completed execplan `.agent/execplan-pending.md`
+1. Locate the completed plan. Try in this order:
+   - Explicit path supplied by the user.
+   - The most recently dated file under `.agent/done/` (where `/implement-execplan` archives completed singleton plans).
+   - `.agent/work/<id-slug>/execplan.md` for the most recently updated work item with `stage="implementation"` and `state="completed"`.
+   - Legacy fallback: `.agent/execplan-pending.md`, if it still exists.
+   Read it in full, including `Surprises & Discoveries` and `Outcomes & Retrospective` — those sections often record the architectural shifts that need absorbing.
 2. Locate ARCHITECTURE.md at the repo root
 3. Analyze what was implemented in the execplan and identify architectural impacts:
    - New modules or bounded contexts

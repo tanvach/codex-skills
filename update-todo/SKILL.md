@@ -17,7 +17,7 @@ Maintain an existing repository-root `TODO.md` as a current, prioritized decisio
 2. Read `../references/todo-list-rubric.md` from this skills repo.
 3. Inspect enough repo context to validate the list:
    - current docs and architecture notes
-   - recent plans or completed work
+   - the most recent completed plans under `.agent/done/` — read their `Surprises & Discoveries` and `Outcomes & Retrospective` sections, since `$implement-execplan` uses those as the structured channel for follow-up work surfaced during execution
    - relevant files for items being changed
    - lightweight code search for shipped, stale, or conflicting work
 4. Choose the correct mode:
