@@ -1,0 +1,4 @@
+interface:
+  display_name: "Karpathy Guidelines"
+  short_description: "Keep coding-agent changes simple and surgical"
+  default_prompt: "Use $karpathy-guidelines while implementing this change."

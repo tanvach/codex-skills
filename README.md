@@ -156,10 +156,51 @@ Listed in roughly the order they appear in the staged workflow:
 - `implement-execplan` executes a work-item ExecPlan or legacy singleton plan, with per-step commits and mandatory living-section updates before archive.
 - `verify-implementation` triangulates the plan against the actual `git diff` and validation runs. Use after `implement-execplan`, ideally in a fresh session or on a stronger model, to catch silent deviations and validation failures.
 - `walk-through-changes` explains completed implementation work so a human can validate the structure.
+- `karpathy-guidelines` applies cautious coding-agent guidelines for assumptions, simplicity, surgical edits, and verification.
+- `grill-me` stress-tests a plan or design one question at a time, using repo inspection when the answer is discoverable.
 - `find-refactor-candidates` creates a materially different refactor shortlist under `.agent/work/`.
 - `select-refactor` challenges a shortlist and locks the final refactor decision before planning.
 - `refactor-something` is the one-shot shortcut for a single consolidation refactor recommendation.
 - `sync-skills` regenerates derived files and installs managed links for all four tools.
+
+## Karpathy Guidelines
+
+`karpathy-guidelines` is a reusable version of the upstream
+[`CLAUDE.md`](https://github.com/multica-ai/andrej-karpathy-skills/blob/main/CLAUDE.md)
+guidance, adapted to this repo's skill format.
+
+Use it as a coding and review lens when the task has meaningful ambiguity,
+implementation risk, or room for overengineering:
+
+- before implementing a non-trivial feature, bug fix, or refactor
+- before reviewing a diff for unnecessary changes or bloated abstractions
+- when you want the agent to surface assumptions and tradeoffs before coding
+- when you want success criteria and verification to drive the implementation
+
+Invoke it directly in Codex:
+
+```bash
+$karpathy-guidelines
+```
+
+Or combine it with a task:
+
+```text
+Use $karpathy-guidelines while implementing this refactor.
+```
+
+In Claude Code, the generated command is:
+
+```bash
+/karpathy-guidelines
+```
+
+The upstream repo's `CLAUDE.md` is useful when you want the guidelines to apply
+automatically as persistent Claude Code project instructions. In this repo, the
+compatible source of truth is `karpathy-guidelines/SKILL.md`; the Claude command
+is generated from that source. Do not copy the upstream `CLAUDE.md` into this
+repo unless you intentionally want always-on Claude-specific behavior in addition
+to the reusable skill.
 
 ## Workflows
 
@@ -200,15 +241,26 @@ Otherwise, take the item directly from TODO.md or a PRD/RFC.
 This is the loop with every rigor pass run. Use it when planning and implementing may happen in different sessions or on different models (e.g. plan on Claude/GPT-5, implement on Gemini Flash):
 
 ```bash
+$grill-me                    # stress-test the idea/design before turning it into a plan
 $execplan-create             # plan from a PRD, RFC, TODO item, or locked refactor decision
 $execplan-improve            # rewrite the plan against real code, fix code-grounding gaps
 $execplan-portability-check  # audit the plan in isolation; flag context that leaks from this session
+$karpathy-guidelines         # apply the simple, surgical, verification-driven implementation lens
 $implement-execplan          # implement; per-step commits; fill living sections before archive
 $walk-through-changes        # human-readable explanation for the reviewer
 $verify-implementation       # triangulate plan vs git diff vs validation runs
 $update-architecture-docs    # absorb any architectural shifts into ARCHITECTURE.md
 $update-todo                 # mark done, integrate follow-ups from Outcomes & Retrospective
 ```
+
+`$grill-me` is most useful before `$execplan-create`, while the idea is still
+cheap to reshape. Use it to clarify assumptions, tradeoffs, and design branches
+so the ExecPlan starts from a sharper brief. If the generated or improved plan
+still has meaningful uncertainty, run `$grill-me` again, fold the resolved
+answers into the ExecPlan, and rerun `$execplan-improve` before portability
+checking. `$karpathy-guidelines` is a lightweight preflight before
+implementation; it should shape the coding pass, not produce a separate
+artifact.
 
 If `$verify-implementation`'s verdict is `silently deviates` or `fails validation`, loop back through `$execplan-improve` → `$implement-execplan` → `$verify-implementation` until the verdict is clean. **Do not run `$update-todo` until the verdict is good** — checking off TODO items for half-done work hides the gap.
 
@@ -217,9 +269,11 @@ If `$verify-implementation`'s verdict is `silently deviates` or `fails validatio
 When planning and implementing happen in the same session and same model, two rigor passes are redundant because conversation context is already in the model:
 
 ```bash
+$grill-me                    # optional — use first when the request/design is still fuzzy
 $execplan-create             # plan
 $execplan-improve            # still useful — catches code-grounding drift, not just context leakage
 # skip $execplan-portability-check — its job is to detect handoff leakage
+$karpathy-guidelines         # optional — invoke before coding when complexity or scope creep is likely
 $implement-execplan          # the embedded $double-check-work pass covers same-session sanity
 # skip $verify-implementation — same-session validation already happened via double-check-work
 $walk-through-changes        # optional, mostly for the human reviewer
