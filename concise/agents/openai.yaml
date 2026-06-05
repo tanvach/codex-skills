@@ -1,0 +1,4 @@
+interface:
+  display_name: "Concise"
+  short_description: "Rewrite answers with less mental load"
+  default_prompt: "Use $concise to make the previous answer shorter and easier to read."

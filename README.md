@@ -158,6 +158,8 @@ Listed in roughly the order they appear in the staged workflow:
 - `walk-through-changes` explains completed implementation work so a human can validate the structure.
 - `karpathy-guidelines` applies cautious coding-agent guidelines for assumptions, simplicity, surgical edits, and verification.
 - `grill-me` stress-tests a plan or design one question at a time, using repo inspection when the answer is discoverable.
+- `humanizer` rewrites AI-sounding text into more natural prose while preserving meaning and voice.
+- `concise` rewrites the current answer, previous answer, or recent conversation with less mental load.
 - `find-refactor-candidates` creates a materially different refactor shortlist under `.agent/work/`.
 - `select-refactor` challenges a shortlist and locks the final refactor decision before planning.
 - `refactor-something` is the one-shot shortcut for a single consolidation refactor recommendation.
