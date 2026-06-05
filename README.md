@@ -2,22 +2,24 @@
 
 Personal agent skills tracked in git, with top-level `SKILL.md` folders as the source of truth.
 
-This repo can drive four tools from one source:
+This repo can drive five tools and upload surfaces from one source:
 
 - Codex skills linked into `~/.codex/skills`
 - Claude Code custom slash commands linked into `~/.claude/commands`
+- Claude Desktop/Web custom skill ZIPs generated under `generated/claude-desktop-skills/`
 - Gemini CLI skills linked into `~/.gemini/skills` (Gemini CLI auto-promotes each installed skill to a `/<name>` slash command, so no separate TOML install is needed)
 - Antigravity skills linked into `~/.gemini/antigravity/skills` (Antigravity auto-promotes each installed skill to a `/<name>` slash command, same as Gemini CLI)
 
 Note that Gemini CLI and Antigravity use *different* paths under `~/.gemini/`. One symlink does not cover both — they get separate installers.
 
-Claude command files are generated from the source skill folders and should not be edited by hand.
+Claude command files and Claude Desktop/Web ZIP files are generated from the source skill folders and should not be edited by hand.
 
 ## Layout
 
 - Top-level skill folders such as `double-check-work/` and `sync-skills/` are the canonical source.
 - `scripts/lib/skill_meta.sh` holds the shared frontmatter helpers (`strip_frontmatter`, `extract_description`) used by the generator.
 - `scripts/create_claude_skills.sh` generates derived Claude command files under `generated/claude-commands/`.
+- `scripts/create_claude_desktop_skills.sh` generates one uploadable ZIP per skill under `generated/claude-desktop-skills/`.
 - `scripts/install_codex_skills.sh` symlinks source skill folders into Codex.
 - `scripts/install_claude_skills.sh` symlinks generated Claude command files into Claude Code.
 - `scripts/install_gemini_skills.sh` symlinks source skill folders into Gemini CLI.
@@ -64,6 +66,22 @@ To remove stale repo-managed Claude command links after deletions:
 
 ```bash
 ./scripts/install_claude_skills.sh --prune
+```
+
+## Claude Desktop/Web Uploads
+
+Generate one uploadable ZIP per skill:
+
+```bash
+./scripts/create_claude_desktop_skills.sh
+```
+
+The ZIPs are written to `generated/claude-desktop-skills/`. Upload each ZIP in Claude Desktop or Claude Web via `Customize > Skills > + > Create skill > Upload a skill`.
+
+To preview changes:
+
+```bash
+./scripts/create_claude_desktop_skills.sh --check
 ```
 
 ## Gemini CLI Only
@@ -116,6 +134,7 @@ From the repo root, either run the scripts directly:
 
 ```bash
 ./scripts/create_claude_skills.sh
+./scripts/create_claude_desktop_skills.sh
 ./scripts/install_codex_skills.sh
 ./scripts/install_claude_skills.sh
 ./scripts/install_gemini_skills.sh
@@ -138,9 +157,10 @@ If you deleted a source skill and want the old links cleaned up too:
 1. Add or edit a top-level source skill folder with `SKILL.md`.
 2. If Claude needs different wording, add `claude.override.md` inside that skill folder. The override is consumed only by the Claude command generator; it does not affect the other tools.
 3. Run the generators and installers again (see "Sync All").
-4. Restart the relevant tool if the new command, skill, or workflow does not appear immediately.
+4. For Claude Desktop/Web, upload the relevant ZIP from `generated/claude-desktop-skills/`.
+5. Restart the relevant tool if the new command, skill, or workflow does not appear immediately.
 
-When a new skill is added, rerunning sync will generate new derived files and link them into every tool. When a skill is removed, run the prune variants of the install scripts to remove stale repo-managed links.
+When a new skill is added, rerunning sync will generate new derived files, create an uploadable Desktop/Web ZIP, and link it into every local tool. When a skill is removed, run the prune variants of the install scripts to remove stale repo-managed links; the generators remove stale derived files automatically.
 
 ## Included Workflow Skills
 

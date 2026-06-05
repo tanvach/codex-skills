@@ -1,5 +1,5 @@
 ---
-description: "Sync this skills repository across Codex, Claude Code, Gemini CLI, and Antigravity by generating derived command files from the source skills and installing or pruning the managed links. Use when the user wants to sync skills, regenerate commands or workflows, install updated skills, or check what would change."
+description: "Sync this skills repository across Codex, Claude Code, Claude Desktop/Web, Gemini CLI, and Antigravity by generating derived files from the source skills and installing or pruning the managed links. Use when the user wants to sync skills, regenerate commands, package Desktop upload ZIPs, install updated skills, or check what would change."
 ---
 
 <!-- Generated from sync-skills. Do not edit directly. -->
