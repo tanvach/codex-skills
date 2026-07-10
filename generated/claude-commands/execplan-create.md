@@ -75,6 +75,13 @@ Every plan should explain what complexity exists today, who pays for it, what
 boundary becomes simpler, what knowledge moves out of callers, and what future
 change becomes easier.
 
+Every plan that changes code must include a maintainability acceptance
+criterion. Require the implementer to scrutinize the resulting code in context
+for cohesive responsibilities, clear names, simple control flow, focused tests,
+duplication, leaky abstractions, and safe future modification. If that scrutiny
+cannot be mechanical, label it `[REQUIRES_REASONING]` and name the files and
+criteria rather than writing a vague review step.
+
 ## Authoring workflow
 
 1. Resolve the input source.
@@ -86,6 +93,7 @@ change becomes easier.
    - Preserve hard constraints from `decision.md` when present.
    - Name exact files and boundaries.
    - Describe the current pain and intended complexity dividend.
+   - State the maintainability checks that must pass before the work is done.
    - Keep the plan self-contained, novice-friendly, and behavior-focused.
 4. Save the ExecPlan.
    - Work item: write `execplan.md` in the same work-item directory and update

@@ -113,13 +113,15 @@ no-edit constraint on code. Creating or updating work-item artifacts under
 5. Rank without locking the decision.
    - Score complexity removed from callers and readers, information-hiding
      gain, cognitive load reduction, change amplification reduction,
-     special-case elimination, blast radius versus risk, and evidence
+     special-case elimination, maintainability improvement, blast radius versus
+     risk, and evidence
      confidence.
    - Name a provisional leader, not a final winner.
 6. Write `candidates.md`.
    - Include repo scope and constraints, the repo model, ranked shortlist,
      assumption ledgers, provisional leader, why each runner-up is still alive,
-     and the next step for `/select-refactor`.
+     and the next step for `/select-refactor`. For each serious candidate, state
+     how it improves or harms readability and future modification.
 7. Finalize metadata.
    - Set `stage="candidates"`, `state="completed"`,
      `artifacts.candidates="candidates.md"`, and `updated_at=<now>`.

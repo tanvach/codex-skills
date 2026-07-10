@@ -37,6 +37,20 @@ wrappers, adapters, flags, layers, or configuration without hiding more detail
 from the rest of the system. If a new abstraction is required, state exactly
 what it hides and why the system is simpler with it than without it.
 
+## Maintainability Requirement
+
+Code output must be scrutinized for readability and future maintenance, not
+only for behavioral correctness. For every code-changing plan, specify how the
+implementer will review the final diff in context for cohesive responsibilities,
+clear naming, simple control flow, duplicated logic, leaky abstractions,
+misleading comments, focused tests, and the next likely modification. The plan
+must make a maintainability acceptance criterion observable: name the files or
+boundaries to inspect, the complexity to remove or avoid, and any trade-off
+that remains. When this review cannot be reduced to a command or file-state
+check, label it `[REQUIRES_REASONING]` and require a short finding with the
+named files and rubric criteria; do not hide it behind a vague "review code"
+step.
+
 The ExecPlan must contain these sections, in order:
 
 # Title
@@ -76,6 +90,7 @@ Describe the work as a sequence of concrete steps. For each step, mention:
 - any sequencing constraints or migration details
 - any design choices that the implementer should preserve
 - how the step reduces complexity, hides policy, or removes a special case
+- how the resulting code will stay readable and safe to modify later
 
 Prefer additive, testable changes followed by cleanup that keeps validation
 passing. Do not leave key decisions to the implementer when repository evidence

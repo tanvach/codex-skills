@@ -76,7 +76,8 @@ prose.
      contradicts it, what simpler alternative gets most of the benefit, what
      runner-up strengthens if the leader's main assumption fails, and whether
      the minimal surgical change or do-nothing option dominates under the
-     stated risk tolerance.
+     stated risk tolerance. Also challenge whether the leader makes future
+     changes easier to locate, understand, test, and modify.
 3. Gather cheap evidence.
    - Favor disconfirming evidence over elaboration.
    - Useful probes include call-site and import fan-out, dependency graphs,
@@ -87,7 +88,8 @@ prose.
    - Choose the winning refactor and write `decision.md` with the chosen
      refactor, why it beats the alternatives now, evidence that changed
      confidence, why runner-ups lost, success criteria, first safe slice,
-     abandonment conditions, and hard constraints for `/execplan-create`.
+     abandonment conditions, maintainability constraints, and hard constraints
+     for `/execplan-create`.
 5. Finalize metadata.
    - Set `stage="decision"`, `state="completed"`,
      `artifacts.decision="decision.md"`, and `updated_at=<now>`.

@@ -69,7 +69,17 @@ Save the resolved range as `$range` for the rest of the skill.
    - If the step is non-mechanical ("open the IDE and confirm…"), skip with `[REQUIRES_HUMAN]` and defer to the user.
    - If the step contains a judgment verb ("verify the refactor is clean"), skip with `[NON-MECHANICAL]` and note that the plan failed `execplan-portability-check` category D — flag for follow-up.
 
-7. Score and report.
+7. **Maintainability scrutiny.** Read each materially changed module in
+   context, including nearby callers and focused tests where relevant. Treat
+   the code as untrusted until it is understandable and safely changeable.
+   Check for unclear names, mixed responsibilities, unnecessary indirection,
+   duplicated policy, complex control flow, misleading comments, fragile
+   tests, and changes whose next likely modification has no obvious home.
+   Record each finding as `PASS`, `REVISION REQUIRED`, or `[REQUIRES_HUMAN]`
+   with file evidence. Do not dismiss a finding as "style" when it materially
+   raises cognitive load or change amplification.
+
+8. Score and report.
 
 ## Verdict
 
@@ -81,6 +91,11 @@ The verdict has four levels. Report the most severe that applies:
 - **`fails validation`** — any mechanical Validation step returned FAIL or UNEXPECTED OUTPUT. Severity trumps every other category. The system doesn't work regardless of what the implementer claimed.
 
 Severity order: `fails validation` > `silently deviates` > `deviates with explanation` > `matches plan`.
+
+A `matches plan` verdict requires no `REVISION REQUIRED` maintainability
+findings. If maintainability scrutiny requires revision, report the otherwise
+applicable verdict plus `Maintainability: REVISION REQUIRED` and recommend
+`revise`.
 
 ## Output
 
@@ -118,11 +133,16 @@ Report in this exact shape:
     - Step 4: <description> → [NON-MECHANICAL], plan needs execplan-portability-check follow-up
     - ...
 
+    Maintainability:
+    - `path/to/file`: PASS | REVISION REQUIRED | [REQUIRES_HUMAN]
+      Evidence: <specific code-level reason>
+
     Recommended next step: ship | revise | re-run with stronger model | run execplan-portability-check on this plan
 
 ## When to ship vs revise
 
 - `matches plan` and all mechanical Validation passes → **ship**.
+- Any `REVISION REQUIRED` maintainability finding → **revise** before shipping.
 - `deviates with explanation` and all mechanical Validation passes → **review each explanation**. Ship if the deviations are sound; revise if any explanation is post-hoc rationalization for a bad call.
 - `silently deviates` → **revise**. Send the punch list back to the implementer (or to a stronger model in a fresh session) and re-verify.
 - `fails validation` → **revise**. The system doesn't work. Diagnose the failure, fix, re-verify.

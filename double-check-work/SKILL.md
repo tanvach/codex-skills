@@ -20,6 +20,18 @@ Before you give your final answer, do one short skeptical pass over the work you
 - If I wrote a plan, is it concrete, ordered, and missing any important validation step?
 - If I summarized docs or research, did I overclaim or leave out a key constraint?
 - If I could not verify something, am I saying that plainly instead of implying it was checked?
+- If code changed, did I scrutinize the actual output for maintainability, not
+  just correctness?
+
+## Maintainability scrutiny
+
+Treat generated or edited code as suspect until you have read the changed code
+in its surrounding module and checked that a future engineer can understand,
+test, and safely modify it. Look for cohesive responsibilities, clear names,
+simple control flow, explicit error handling, appropriate tests, duplicated
+logic, misleading comments, and abstractions that hide little. Remove or flag
+incidental complexity rather than calling it "clean code." State any material
+maintainability risk in the final answer.
 
 ## What to do
 

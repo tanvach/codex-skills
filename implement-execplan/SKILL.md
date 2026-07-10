@@ -79,7 +79,17 @@ When the plan leaves room for judgment:
      `Decision Log` entry with the rationale.
 7. After each meaningful slice, run the plan's validation steps or the
    nearest targeted verification.
-8. Before archiving the plan to `.agent/done/` (or marking the work item
+8. Run a maintainability scrutiny pass before declaring the implementation
+   complete.
+   - Read the changed code in its surrounding modules and tests, not only as
+     diff hunks.
+   - Check cohesive responsibilities, clear naming, simple control flow,
+     explicit error handling, duplicated logic, leaky abstractions, misleading
+     comments, focused tests, and whether the next likely change has one
+     obvious home.
+   - Simplify or fix issues within scope. Record any material trade-off or
+     residual maintenance risk in `Decision Log` or `Outcomes & Retrospective`.
+9. Before archiving the plan to `.agent/done/` (or marking the work item
    `state="completed"`), the plan must reflect what actually happened:
    - Every step in `Progress` is either checked or marked deferred with a
      one-line reason.
@@ -91,11 +101,11 @@ When the plan leaves room for judgment:
    These sections are how a downstream verification pass — especially one
    run by a different model in a fresh session — understands what you did.
    Skipping them defeats the verification loop.
-9. If you finish a work-item implementation, set `state="completed"`.
-10. If you cannot finish safely in the current turn, record the blocker in
+10. If you finish a work-item implementation, set `state="completed"`.
+11. If you cannot finish safely in the current turn, record the blocker in
     the plan, set work-item state to `blocked` when applicable, and stop
     cleanly.
-11. Before your final response, run a brief `$double-check-work` pass over
+12. Before your final response, run a brief `$double-check-work` pass over
     the implementation, diff, and verification.
 
 ## Implementation-First Rule

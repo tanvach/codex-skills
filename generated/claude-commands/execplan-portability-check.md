@@ -70,6 +70,12 @@ Flag any step that requires the implementer to use reasoning beyond mechanical e
 
 Prescription: either pre-make the decision in the plan and prescribe the mechanical edit, or mark the step `[REQUIRES_REASONING]` so a hybrid workflow routes that step to a stronger model.
 
+Exception: a maintainability scrutiny step may use review language when it is
+explicitly labeled `[REQUIRES_REASONING]`, names the files or boundaries to
+inspect, and lists concrete criteria such as responsibility cohesion, naming,
+control flow, duplication, testability, and safe future modification. It is a
+deliberate review handoff, not a vague implementation instruction.
+
 A step in the Goal, Scope, Current State, or Risks sections may legitimately use judgment language to characterize the design. Only flag judgment verbs that appear in **Implementation Plan** or **Validation** steps where the implementer must act.
 
 ### D. Non-mechanical validation criteria

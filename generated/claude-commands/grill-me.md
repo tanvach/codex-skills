@@ -22,6 +22,10 @@ decisions one by one.
    decision tree.
 5. Continue until the major assumptions, tradeoffs, dependencies, risks, and
    success criteria are resolved.
+6. For a code-affecting plan, include maintainability in the decision tree:
+   ownership boundaries, dependency direction, the next likely modification,
+   and how a future engineer will locate, understand, test, and safely change
+   the resulting code.
 
 ## Codebase-Aware Rule
 

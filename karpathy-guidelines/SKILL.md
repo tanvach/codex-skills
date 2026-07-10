@@ -80,6 +80,23 @@ signal:
 Strong success criteria let the agent continue independently. Weak criteria
 like "make it work" require clarification or a concrete verification choice.
 
+## 5. Maintainability Is a Delivery Requirement
+
+Correct code is not done until its output has been scrutinized for readability
+and future maintenance. Read the changed code in context and ask:
+
+- Does each function, type, and module have one clear responsibility?
+- Are names, control flow, error paths, and comments easy to follow without
+  reconstructing hidden context?
+- Did the change duplicate logic, leak policy into callers, or add a wrapper
+  that hides little?
+- Can the next likely change be made in one obvious place and covered by a
+  focused test?
+
+Prefer a small, direct change that fits local conventions. When a trade-off
+remains, record it and explain why the simpler-to-maintain option was not
+chosen.
+
 ## How To Apply
 
 - Use this as a lens while making or reviewing code changes.
@@ -87,4 +104,5 @@ like "make it work" require clarification or a concrete verification choice.
 - Prefer implementation over extended debate once the goal and constraints are
   clear.
 - Before the final answer, check that the diff is small, directly relevant, and
-  verified as far as reasonably possible.
+  verified as far as reasonably possible. Also report that maintainability
+  scrutiny occurred and name any unresolved maintenance risk.

@@ -177,6 +177,7 @@ Listed in roughly the order they appear in the staged workflow:
 - `verify-implementation` triangulates the plan against the actual `git diff` and validation runs. Use after `implement-execplan`, ideally in a fresh session or on a stronger model, to catch silent deviations and validation failures.
 - `walk-through-changes` explains completed implementation work so a human can validate the structure.
 - `karpathy-guidelines` applies cautious coding-agent guidelines for assumptions, simplicity, surgical edits, and verification.
+- `double-check-work` is the final lightweight maintainability and verification gate for any changed code.
 - `grill-me` stress-tests a plan or design one question at a time, using repo inspection when the answer is discoverable.
 - `humanizer` rewrites AI-sounding text into more natural prose while preserving meaning and voice.
 - `concise` rewrites the current answer, previous answer, or recent conversation with less mental load.
@@ -280,9 +281,16 @@ cheap to reshape. Use it to clarify assumptions, tradeoffs, and design branches
 so the ExecPlan starts from a sharper brief. If the generated or improved plan
 still has meaningful uncertainty, run `$grill-me` again, fold the resolved
 answers into the ExecPlan, and rerun `$execplan-improve` before portability
-checking. `$karpathy-guidelines` is a lightweight preflight before
+checking. Use it to settle maintainability constraints early as well, including
+ownership boundaries, dependency direction, and the next likely modification.
+`$karpathy-guidelines` is a lightweight preflight before
 implementation; it should shape the coding pass, not produce a separate
-artifact.
+artifact. Maintainability is checked repeatedly: the ExecPlan defines the
+acceptance criteria, implementation scrutinizes changed code in context,
+`$walk-through-changes` makes the structural result legible to a human, and
+`$verify-implementation` can block shipping on material maintainability
+findings. `$double-check-work` remains the final lightweight gate for every
+coding task, including same-session work.
 
 If `$verify-implementation`'s verdict is `silently deviates` or `fails validation`, loop back through `$execplan-improve` → `$implement-execplan` → `$verify-implementation` until the verdict is clean. **Do not run `$update-todo` until the verdict is good** — checking off TODO items for half-done work hides the gap.
 

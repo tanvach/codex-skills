@@ -77,7 +77,10 @@ If no ExecPlan exists in any supported location, tell the user and stop.
      special-case branches the plan could absorb.
 5. Audit the plan.
    - Check accuracy, completeness, self-containment, feasibility, testability,
-     safety, and design quality.
+     safety, design quality, and maintainability.
+   - Verify that code-changing milestones require scrutiny of the final code in
+     context: cohesive responsibilities, clear names, simple control flow,
+     duplication, boundaries, comments, tests, and safe future modification.
 6. Rewrite the plan in place.
    - Work-item format: rewrite `execplan.md`.
    - Legacy format: rewrite the original singleton path.
@@ -86,7 +89,7 @@ If no ExecPlan exists in any supported location, tell the user and stop.
    - Apply only code-grounded improvements: fix inaccuracies, add missing
      files or tests, split oversized milestones, define jargon, make acceptance
      criteria observable, add recovery guidance, and strengthen the intended
-     simplicity boundary.
+     simplicity boundary and maintainability acceptance criteria.
    - Do not change the plan's intent.
 7. Finalize metadata when using a work item.
    - Keep `stage="plan"`, `state="completed"`, and update `updated_at=<now>`.

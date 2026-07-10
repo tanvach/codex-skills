@@ -43,6 +43,9 @@ Rank candidates by:
    removes classes of bugs.
 4. Velocity unlock. Refactors that unblock future work get priority.
 5. Risk tolerance. Favor refactors with clear validation and rollback paths.
+6. Maintainability. Favor the option that makes the next likely change easier
+   to find, understand, test, and modify without spreading policy across
+   callers.
 
 Do not propose cosmetic cleanup, speculative abstraction, or broad rewrites of
 stable working code without a clear win.
@@ -65,7 +68,7 @@ stable working code without a clear win.
      and ease of validation or rollback.
 4. Propose the single best refactor.
    - Include current state, proposed change, impacted files, expected outcome,
-     acceptance criteria, and risks with mitigations.
+     acceptance criteria, maintainability impact, and risks with mitigations.
 5. Make the call.
    - If candidates score similarly, pick the smallest blast radius.
    - Tie-break by easiest validation.

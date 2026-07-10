@@ -58,7 +58,9 @@ plan, files, and git history.
 5. Call out important non-changes: plan items intentionally deferred, removed
    scope, compatibility preserved, or behavior left untouched.
 6. Include verification performed and verification still missing.
-7. End with a short validation checklist the user can scan before approving.
+7. Include a maintainability reading: whether responsibilities, naming,
+   boundaries, and the next likely modification remain easy to follow.
+8. End with a short validation checklist the user can scan before approving.
 
 ## Output Shape
 
@@ -85,6 +87,9 @@ exists.]
 **Validation**
 - Ran: `[command]` - [result]
 - Not run: `[command or check]` - [reason]
+
+**Maintainability**
+- [PASS or risk]: [specific evidence about readability, boundaries, or future modification]
 
 **Review Checklist**
 - [ ] [concrete behavior or boundary the user should validate]

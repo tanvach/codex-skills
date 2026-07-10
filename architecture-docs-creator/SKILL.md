@@ -18,6 +18,8 @@ Create a clear, opinionated ARCHITECTURE.md that explains the system design and 
 3. Design the architecture.
    - Choose a single architectural style and justify it.
    - Define modules/bounded contexts and their responsibilities.
+   - Define maintainability constraints: ownership, dependency direction,
+     naming boundaries, and where the next likely change belongs.
 4. Write ARCHITECTURE.md.
    - Use the template below and fill it fully.
    - Be direct and opinionated; include trade-offs and explicit prohibitions.
@@ -88,3 +90,6 @@ flowchart LR
 - Use strong defaults, not vague options.
 - Prefer crisp bullets over long paragraphs.
 - Record assumptions explicitly if you had to make them.
+- Make future maintenance explicit: a new engineer should be able to locate
+  behavior, understand ownership, and change it without coordinating unrelated
+  modules.

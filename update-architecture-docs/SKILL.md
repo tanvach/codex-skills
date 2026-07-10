@@ -26,6 +26,8 @@ Synchronize ARCHITECTURE.md with changes made during execplan implementation.
    - New integrations or dependencies
    - Updated directory structure
    - New cross-cutting concerns
+   - Maintainability consequences: ownership, dependency direction, and where
+     future modifications now belong
 4. Update only the affected sections of ARCHITECTURE.md
 5. If diagrams exist, update Mermaid diagrams to reflect new components/flows
 6. Run a brief `$double-check-work` pass on the updated document and fix any clear mismatch with the implemented system.
