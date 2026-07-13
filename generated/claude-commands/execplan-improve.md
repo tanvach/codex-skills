@@ -1,5 +1,5 @@
 ---
-description: "Read an existing ExecPlan, deeply analyze every referenced file and code path, and rewrite the plan with concrete, code-grounded improvements. Prefer work-item plans under `.agent/work/`, while preserving compatibility with `.agent/execplan-pending.md`."
+description: "Read an existing ExecPlan, deeply analyze every referenced file and code path, and rewrite the plan with concrete, code-grounded improvements, including plausible edge cases, failure paths, regression coverage, and maintainability. Prefer work-item plans under `.agent/work/`, while preserving compatibility with `.agent/execplan-pending.md`."
 ---
 
 <!-- Generated from execplan-improve. Do not edit directly. -->
@@ -73,9 +73,16 @@ If no ExecPlan exists in any supported location, tell the user and stop.
      conventions the plan misses, leaked sequencing or policy, shallow
      abstractions the plan preserves without reason, and duplicate concepts or
      special-case branches the plan could absorb.
+   - Trace normal and failure paths through the affected flows. Identify
+     plausible boundary inputs, partial failures, cleanup or rollback needs,
+     state transitions, ordering, idempotency, concurrency, and compatibility
+     risks from the actual contracts and callers.
 5. Audit the plan.
    - Check accuracy, completeness, self-containment, feasibility, testability,
      safety, design quality, and maintainability.
+   - Require acceptance criteria and focused tests for every material bug risk
+     or edge case discovered in the code. Include regression coverage for
+     nearby behavior that must remain unchanged.
    - Verify that code-changing milestones require scrutiny of the final code in
      context: cohesive responsibilities, clear names, simple control flow,
      duplication, boundaries, comments, tests, and safe future modification.
@@ -85,9 +92,10 @@ If no ExecPlan exists in any supported location, tell the user and stop.
    - Preserve existing `Progress`, `Surprises & Discoveries`, `Decision Log`,
      and `Outcomes & Retrospective` content.
    - Apply only code-grounded improvements: fix inaccuracies, add missing
-     files or tests, split oversized milestones, define jargon, make acceptance
-     criteria observable, add recovery guidance, and strengthen the intended
-     simplicity boundary and maintainability acceptance criteria.
+     files or tests, cover plausible edge and failure cases, split oversized
+     milestones, define jargon, make acceptance criteria observable, add
+     recovery guidance, and strengthen the intended simplicity boundary and
+     maintainability acceptance criteria.
    - Do not change the plan's intent.
 7. Finalize metadata when using a work item.
    - Keep `stage="plan"`, `state="completed"`, and update `updated_at=<now>`.
@@ -100,6 +108,7 @@ If no ExecPlan exists in any supported location, tell the user and stop.
 
 - surface-level rewording without code evidence
 - speculative additions
+- inventing edge cases unsupported by the code's contracts or callers
 - changing the plan's goal
 - ignoring existing progress
 - preserving shallow or leaky abstractions just because they were already in the draft

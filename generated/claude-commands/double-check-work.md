@@ -1,5 +1,5 @@
 ---
-description: "Run a short final self-check before responding after creating a plan, implementing code, editing files, or summarizing documentation. Use when the user asks for a plan, code changes, docs summary, or explicitly asks you to double-check, verify, sanity-check, review your own work, or be especially careful."
+description: "Run a short final self-check before responding after creating a plan, implementing code, editing files, or summarizing documentation. For code, scrutinize correctness, plausible edge cases, regressions, verification, and maintainability. Use when the user asks for code changes, a plan, a docs summary, or explicitly asks to double-check, verify, sanity-check, review your own work, or be especially careful."
 ---
 
 <!-- Generated from double-check-work. Do not edit directly. -->
@@ -19,6 +19,24 @@ Before you give your final answer, do one short skeptical pass over the work you
 - If I could not verify something, am I saying that plainly instead of implying it was checked?
 - If code changed, did I scrutinize the actual output for maintainability, not
   just correctness?
+
+## Code correctness and edge cases
+
+When code changed, inspect the implementation in context for plausible bugs and
+regressions, not only compilation or the happy path. Check the cases that apply:
+
+- boundary inputs such as empty, missing, malformed, minimum, maximum, or
+  unusually large values
+- error, timeout, retry, cancellation, cleanup, rollback, and partial-failure
+  paths
+- state transitions, ordering, idempotency, and concurrency risks
+- compatibility with nearby callers and behavior that should remain unchanged
+- focused tests that would fail before a bug fix and pass afterward
+
+Do not invent impossible edge cases merely to lengthen the review. Use the
+code's actual contracts, types, callers, and failure modes to decide what is
+plausible. Run the smallest relevant checks, fix clear in-scope bugs, and state
+what could not be verified.
 
 ## Maintainability scrutiny
 
