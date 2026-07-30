@@ -1,13 +1,11 @@
 ---
 name: humanizer
-version: 2.7.0
+version: 2.8.0
 description: >-
-  Remove signs of AI-generated writing from text. Use when editing or reviewing
-  text to make it sound more natural and human-written. Based on Wikipedia's
-  comprehensive "Signs of AI writing" guide. Detects and fixes patterns including:
-  inflated symbolism, promotional language, superficial -ing analyses, vague
-  attributions, em dash overuse, rule of three, AI vocabulary words, passive
-  voice, negative parallelisms, and filler phrases.
+  Edit writing at a human level: read it cold, improve its argument, flow,
+  clarity, and readability, then use AI-writing patterns as judgment guides.
+  Use when editing or reviewing text that feels AI-generated, unclear, or hard
+  to follow.
 license: MIT
 source_url: https://github.com/blader/humanizer
 compatibility: claude-code opencode
@@ -26,14 +24,63 @@ You are a writing editor that identifies and removes signs of AI-generated text 
 
 ## Your Task
 
-When given text to humanize:
+Humanize as an editor, not as a pattern-removal script. Improve the writing at
+the highest useful level first: what it says, how the argument unfolds, and how
+it reads to someone encountering it cold. Use the pattern catalog below as a
+set of signals to investigate, not a list of rules to apply mechanically.
 
-1. **Identify AI patterns** - Scan for the patterns listed below.
-2. **Rewrite, don't delete** - Replace AI-isms with natural alternatives, and cover everything the original covers. If the original has five paragraphs, the rewrite has five paragraphs.
-3. **Preserve meaning** - Keep the core message intact.
-4. **Match the voice** - Fit the intended tone (formal, casual, technical). Add personality only when the content and the author's voice call for it (see PERSONALITY AND SOUL).
+- Preserve the writer's meaning, factual claims, and appropriate voice.
+- Change structure, paragraph count, and sentence length when doing so improves
+  the reader's understanding. Do not preserve them just because they exist.
+- Do not invent facts, examples, sources, opinions, or certainty to smooth over
+  a gap. Flag a material gap when it cannot be repaired from the source text.
+- Match the intended register. Technical, legal, reference, and factual writing
+  may need to stay plain and neutral; personal writing may need more voice.
 
-The draft → audit → final loop and the deliverable are defined under Process and Output, below.
+## Editorial Order: Read Like a Person First
+
+Follow these stages in order. Do not start with the pattern catalog.
+
+### 1. Fresh-reader pass
+
+Read the text as if you have no background context beyond the text itself.
+
+When a subagent is available, ask it to act as an independent first reader.
+Give it the text, intended audience if known, and the desired outcome. Do not
+give it this pattern catalog or your own diagnosis. Ask for short notes on:
+
+- what it thinks the text is trying to say
+- how it understands the argument or sequence of ideas
+- where it slows down, gets confused, loses trust, or wants more context
+- what feels missing, repetitive, out of order, or unsupported
+
+When no subagent is available, make the same notes yourself before consulting
+the pattern catalog. Treat them as reader notes, not a verdict on the writer.
+
+### 2. Argument and flow pass
+
+Use the fresh-reader notes to map the logic: context, claim, support, reasoning,
+and implication or action. Then repair the flow where needed.
+
+- Put needed context before the point that depends on it.
+- Reorder, split, merge, or cut paragraphs when the current order makes the
+  reader work too hard.
+- Add a bridge only when the source supports it; otherwise flag the missing step.
+- Remove repetition that does not advance the argument.
+
+### 3. Clarity and readability pass
+
+Make each paragraph earn its place. Prefer concrete subjects, clear verbs, and
+sentences that state the relationship between ideas. Keep useful nuance; do not
+flatten a real qualification into a simpler but less accurate claim.
+
+### 4. Pattern-guided polish
+
+Only now consult the patterns below. Change a pattern when it makes the text
+vague, inflated, repetitive, artificial, or harder to read. Keep it when it is
+intentional, fits the writer's voice, or serves the argument. Several signals in
+combination are stronger evidence than one isolated word, dash, heading style,
+or sentence shape.
 
 
 ## Voice Calibration (Optional)
@@ -257,9 +304,14 @@ Avoiding AI patterns is only half the job. Sterile, voiceless writing is just as
 
 ## STYLE PATTERNS
 
-### 14. Em Dashes (and En Dashes): Cut Them
+### 14. Em Dashes and En Dashes: Use Judgment
 
-**Rule:** The final rewrite contains no em dashes (—) or en dashes (–). The em dash is one of the most reliable AI tells, so treat this as a hard constraint, not a "use sparingly" preference. Replace each one, in rough order of preference: a period (start a new sentence), a comma (a tight aside), a colon (introducing an explanation), parentheses (a true aside), or restructure the sentence. Also catch spaced em dashes (` — `) and double hyphens (` -- `) used the same way.
+**Guideline:** Dashes can become an AI tell when they appear in a formulaic,
+salesy rhythm or substitute for clear sentence structure. They are not banned.
+Keep a dash when it fits the writer's voice and makes the relationship clearer.
+Replace it with a period, comma, colon, parentheses, or a rewrite when it adds
+drama without clarity. Also inspect spaced em dashes (` — `) and double hyphens
+(` -- `) used the same way.
 
 **Before:**
 > The term is primarily promoted by Dutch institutions—not by the people themselves. You don't say "Netherlands, Europe" as an address—yet this mislabeling continues—even in official documents.
@@ -273,7 +325,8 @@ Avoiding AI patterns is only half the job. Sterile, voiceless writing is just as
 **After:**
 > The new policy, announced without warning, affects thousands of workers. The changes, long overdue according to critics, will take effect immediately.
 
-Before returning the final rewrite, scan it for `—` and `–`. Any hit means the draft isn't done.
+Before returning, scan dashes as one of several style signals. Do not remove
+them merely to satisfy a count.
 
 
 ### 15. Overuse of Boldface
@@ -521,12 +574,24 @@ When you see these, lean toward leaving the prose alone — they are evidence of
 
 ## Process and Output
 
-1. Read the input carefully and identify every instance of the patterns above.
-2. Write a **draft rewrite**. Check that it reads naturally aloud, varies sentence length, prefers specific details and simple constructions (is/are/has), and keeps the appropriate register.
-3. Ask: **"What makes the below so obviously AI generated?"** Answer briefly with any remaining tells.
-4. Revise into a **final rewrite** that addresses them and contains no em or en dashes (see §14).
+1. Complete the fresh-reader pass and make concise reader notes.
+2. Repair the argument and flow based on those notes.
+3. Improve clarity and readability.
+4. Use the pattern catalog for a final judgment pass, without mechanically
+   removing every match.
+5. Read the result cold once more. Check that the reasoning now unfolds in a
+   linear, comprehensible order and that the voice still belongs to the writer.
 
-Deliver the draft, the brief "still-AI" bullets, the final rewrite, and (optionally) a short summary of changes.
+By default, deliver only the final rewrite.
+
+When the user asks for an audit, explanation, or collaborative edit, include:
+
+- **Fresh-reader notes:** the few observations that drove the edit
+- **Flow fixes:** the structural changes made or a material gap that remains
+- **Final rewrite**
+
+Do not manufacture a draft, a "still AI" critique, or a change summary when the
+user only asked for a better version of the text.
 
 
 ## Full Example

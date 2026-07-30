@@ -179,7 +179,7 @@ Listed in roughly the order they appear in the staged workflow:
 - `karpathy-guidelines` applies cautious coding-agent guidelines for assumptions, simplicity, surgical edits, and verification.
 - `double-check-work` is the final lightweight maintainability and verification gate for any changed code.
 - `grill-me` stress-tests a plan or design one question at a time, using repo inspection when the answer is discoverable.
-- `humanizer` rewrites AI-sounding text into more natural prose while preserving meaning and voice.
+- `humanizer` reads text cold, repairs its argument and flow, improves clarity, then uses AI-writing patterns as flexible editing guidance.
 - `concise` rewrites the current answer, previous answer, or recent conversation with less mental load.
 - `find-refactor-candidates` creates a materially different refactor shortlist under `.agent/work/`.
 - `select-refactor` challenges a shortlist and locks the final refactor decision before planning.
