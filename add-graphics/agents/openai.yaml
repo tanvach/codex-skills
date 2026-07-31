@@ -1,0 +1,4 @@
+interface:
+  display_name: "Add Graphics"
+  short_description: "Add accurate visuals that improve understanding"
+  default_prompt: "Use $add-graphics to add only the visuals that improve this walkthrough."

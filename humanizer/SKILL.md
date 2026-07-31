@@ -1,11 +1,11 @@
 ---
 name: humanizer
-version: 2.8.0
+version: 2.9.0
 description: >-
   Edit writing at a human level: read it cold, improve its argument, flow,
   clarity, and readability, then use AI-writing patterns as judgment guides.
-  Use when editing or reviewing text that feels AI-generated, unclear, or hard
-  to follow.
+  Use when editing or reviewing text that feels AI-generated, unclear, hard to
+  follow, or overly complex technical writing.
 license: MIT
 source_url: https://github.com/blader/humanizer
 compatibility: claude-code opencode
@@ -74,7 +74,51 @@ Make each paragraph earn its place. Prefer concrete subjects, clear verbs, and
 sentences that state the relationship between ideas. Keep useful nuance; do not
 flatten a real qualification into a simpler but less accurate claim.
 
-### 4. Pattern-guided polish
+### 4. Technical clarity pass (when applicable)
+
+Use this pass for documentation, READMEs, runbooks, procedures, error messages,
+release notes, incident reports, API guides, and text intended for readers who
+may translate it or read it under pressure. This is a pragmatic plain-language
+mode informed by Simplified Technical English, not a claim of ASD-STE100
+compliance.
+
+Classify each passage before editing:
+
+- **Procedural:** tells the reader what to do. Use direct imperative steps. Put
+  a required condition before its action. Keep one independently executable
+  action per step. Put a warning before the risk it prevents.
+- **Descriptive:** explains what something is, does, or did. Give one main idea
+  per paragraph, name the actor when it matters, and state cause and effect
+  directly.
+
+Apply these constraints with judgment:
+
+- Choose one term for each repeated technical concept. Do not rotate between
+  near-synonyms such as `config`, `settings`, and `options` when they mean the
+  same thing.
+- Preserve exact code blocks, identifiers, commands, flags, paths, API names,
+  quoted errors, numbers, and units. Never simplify a technical name into a
+  plausible paraphrase.
+- Split sentences that combine multiple actions, conditions, exceptions, or
+  causal claims. Do not use an arbitrary word limit when a longer sentence is
+  genuinely clearer.
+- Replace filler with the measurable behavior, failure, limit, or action. Keep
+  a modal or qualifier when the evidence is conditional or uncertain; do not
+  turn `may` into `will` just to sound decisive.
+- For an error or incident, prefer: what happened, the known cause, then the
+  next action. Do not add apology, reassurance, or generic troubleshooting
+  filler.
+
+Before delivery, make a quick technical self-check: each step is executable in
+order, required conditions appear before the action, terms are consistent,
+important qualifiers remain, and protected technical text is unchanged.
+
+Do not apply this mode to brand writing, personal essays, or deliberately
+literary prose. When the user explicitly requests strict ASD-STE100 compliance,
+say that full compliance requires the official standard and its controlled
+dictionary; do not pretend a general editing pass certifies it.
+
+### 5. Pattern-guided polish
 
 Only now consult the patterns below. Change a pattern when it makes the text
 vague, inflated, repetitive, artificial, or harder to read. Keep it when it is
@@ -577,9 +621,10 @@ When you see these, lean toward leaving the prose alone — they are evidence of
 1. Complete the fresh-reader pass and make concise reader notes.
 2. Repair the argument and flow based on those notes.
 3. Improve clarity and readability.
-4. Use the pattern catalog for a final judgment pass, without mechanically
+4. For technical writing, apply the technical clarity pass.
+5. Use the pattern catalog for a final judgment pass, without mechanically
    removing every match.
-5. Read the result cold once more. Check that the reasoning now unfolds in a
+6. Read the result cold once more. Check that the reasoning now unfolds in a
    linear, comprehensible order and that the voice still belongs to the writer.
 
 By default, deliver only the final rewrite.
@@ -644,5 +689,10 @@ user only asked for a better version of the text.
 ## Reference
 
 This skill is based on [Wikipedia:Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing), maintained by WikiProject AI Cleanup. The patterns documented there come from observations of thousands of instances of AI-generated text on Wikipedia.
+
+The technical clarity pass draws pragmatic editing constraints from
+[AminBlg/SimpleEnglish](https://github.com/AminBlg/SimpleEnglish), which adapts
+ASD-STE100 for technical writing. This skill deliberately does not reproduce
+the standard or claim to certify compliance.
 
 Key insight from Wikipedia: "LLMs use statistical algorithms to guess what should come next. The result tends toward the most statistically likely result that applies to the widest variety of cases."
