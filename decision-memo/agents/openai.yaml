@@ -1,0 +1,4 @@
+interface:
+  display_name: "Decision Memo"
+  short_description: "Answer-first, evidence-gated decision documents"
+  default_prompt: "Use $decision-memo to write this as an answer-first, evidence-gated decision memo."

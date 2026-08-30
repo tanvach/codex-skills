@@ -181,6 +181,7 @@ Listed in roughly the order they appear in the staged workflow:
 - `grill-me` stress-tests a plan or design one question at a time, using repo inspection when the answer is discoverable.
 - `humanizer` reads text cold, repairs its argument and flow, improves clarity, then uses AI-writing patterns and pragmatic technical-writing constraints as flexible editing guidance.
 - `concise` rewrites the current answer, previous answer, or recent conversation with less mental load.
+- `decision-memo` writes or restructures decision-driving documents (strategy memos, design docs, PRDs, investment memos, post-mortems, board updates) as answer-first, evidence-gated memos with rejected alternatives, quantified go/kill gates, and owned actions.
 - `add-graphics` creates, repairs, validates, or removes high-value visuals through independent reader checks, argument-consistency audits, and rendered-image validation; it is safe to rerun on the same document.
 - `find-refactor-candidates` creates a materially different refactor shortlist under `.agent/work/`.
 - `select-refactor` challenges a shortlist and locks the final refactor decision before planning.
